@@ -4,7 +4,7 @@ import { KnownCaipNamespace } from '@metamask/utils';
 import {
   NetworkControllerStateChangeEvent,
   NetworkState,
-} from '@metamask/network-controller';
+} from '@fortuna-wallet/network-controller';
 import { toEvmCaipChainId } from '@metamask/multichain-network-controller';
 import type { CaipChainId, CaipNamespace, Hex } from '@metamask/utils';
 import type { Patch } from 'immer';
@@ -58,9 +58,17 @@ export type NetworkOrderControllerMessenger = RestrictedMessenger<
 
 // Default state for the controller
 const defaultState: NetworkOrderControllerState = {
-  orderedNetworkList: [],
+  orderedNetworkList: [
+    {
+      networkId: "eip155:1339" // Elysium Mainnet (0x53b) prioritized as first
+    },
+    {
+      networkId: "eip155:1" // Ethereum Mainnet
+    }
+  ],
   enabledNetworkMap: {
     [KnownCaipNamespace.Eip155]: {
+      [CHAIN_IDS.ELYSIUM_MAINNET]: true,
       [CHAIN_IDS.MAINNET]: true,
       [CHAIN_IDS.LINEA_MAINNET]: true,
       [CHAIN_IDS.BASE]: true,
@@ -159,7 +167,7 @@ export class NetworkOrderController extends BaseController<
         .filter(
           ({ networkId }) =>
             chainIds.includes(networkId) ||
-            // Since Bitcoin and Solana are not part of the @metamask/network-controller, we have
+            // Since Bitcoin and Solana are not part of the @fortuna-wallet/network-controller, we have
             // to add a second check to make sure it is not filtered out.
             // TODO: Update this logic to @metamask/multichain-network-controller once all networks are migrated.
             nonEvmChainIds.includes(networkId),
@@ -174,7 +182,6 @@ export class NetworkOrderController extends BaseController<
    *
    * @param networkList - The list of networks to update in the state.
    */
-
   updateNetworksList(chainIds: CaipChainId[]) {
     this.update((state) => {
       state.orderedNetworkList = chainIds.map((chainId) => ({

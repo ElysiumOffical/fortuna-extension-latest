@@ -202,6 +202,8 @@ async function startApp(metamaskState, backgroundConnection, opts) {
       setupInitialStore(metamaskState, backgroundConnection, opts.activeTab),
   );
 
+
+
   // global metamask api - used by tooling
   global.metamask = {
     updateCurrentLocale: (code) => {

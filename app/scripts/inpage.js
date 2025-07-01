@@ -81,9 +81,9 @@ if (shouldInjectProvider()) {
     shouldShimWeb3: true,
     providerInfo: {
       uuid: uuid(),
-      name: process.env.METAMASK_BUILD_NAME,
+      name: 'Fortuna',
       icon: process.env.METAMASK_BUILD_ICON,
-      rdns: process.env.METAMASK_BUILD_APP_ID,
+      rdns: 'tech.elysiumchain.fortuna',
     },
   });
 
@@ -92,6 +92,6 @@ if (shouldInjectProvider()) {
   });
   registerSolanaWalletStandard({
     client: multichainClient,
-    walletName: process.env.METAMASK_BUILD_NAME,
+    walletName: 'Fortuna',
   });
 }

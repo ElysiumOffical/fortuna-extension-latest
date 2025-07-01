@@ -218,14 +218,14 @@ function generateNetworkControllerState() {
     ...defaultFixture().data.NetworkController,
     networkConfigurations: {},
     networksMetadata: {
-      sepolia: {
+      'elysium-testnet': {
         EIPS: {
           1559: true,
         },
         status: 'available',
       },
     },
-    selectedNetworkClientId: 'sepolia',
+    selectedNetworkClientId: 'elysium-testnet',
   };
 
   if (FIXTURES_CONFIG.withNetworks) {

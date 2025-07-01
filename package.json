@@ -247,6 +247,8 @@
     "@ethersproject/providers": "^5.7.2",
     "@ethersproject/wallet": "^5.7.0",
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fortuna-wallet/controller-utils": "^11.15.0",
+    "@fortuna-wallet/network-controller": "patch:@fortuna-wallet/network-controller@npm%3A26.6.0#~/.yarn/patches/@metamask-network-controller-npm-24.0.0-eb476d2620.patch",
     "@keystonehq/bc-ur-registry-eth": "^0.21.0",
     "@keystonehq/metamask-airgapped-keyring": "patch:@keystonehq/metamask-airgapped-keyring@npm%3A0.15.2#~/.yarn/patches/@keystonehq-metamask-airgapped-keyring-npm-0.15.2-94dd4b40d7.patch",
     "@lavamoat/lavadome-react": "0.0.20",

@@ -1,5 +1,5 @@
-import type { AddNetworkFields } from '@metamask/network-controller';
-import { RpcEndpointType } from '@metamask/network-controller';
+import type { AddNetworkFields } from '@fortuna-wallet/network-controller';
+import { RpcEndpointType } from '@fortuna-wallet/network-controller';
 import { capitalize, pick } from 'lodash';
 import { Hex, hexToNumber } from '@metamask/utils';
 import { MultichainNetworks } from './multichain/networks';
@@ -83,6 +83,8 @@ export const NETWORK_TYPES = {
   MAINNET: 'mainnet',
   RPC: 'rpc',
   SEPOLIA: 'sepolia',
+  ELYSIUM_MAINNET: 'elysium-mainnet',
+  ELYSIUM_TESTNET: 'elysium-testnet',
   LINEA_GOERLI: 'linea-goerli',
   LINEA_SEPOLIA: 'linea-sepolia',
   LINEA_MAINNET: 'linea-mainnet',
@@ -107,6 +109,8 @@ export const CHAIN_SPEC_URL = 'https://chainid.network/chains.json';
  * those that we have added custom code to support our feature set.
  */
 export const CHAIN_IDS = {
+  ELYSIUM_MAINNET: '0x53b',
+  ELYSIUM_TESTNET: '0x53a',
   MAINNET: '0x1',
   GOERLI: '0x5',
   LOCALHOST: '0x539',
@@ -288,6 +292,9 @@ export const DEPRECATED_NETWORKS = [
 export const MAX_SAFE_CHAIN_ID = 4503599627370476;
 
 export const MAINNET_DISPLAY_NAME = 'Ethereum Mainnet';
+export const ELYSIUM_MAINNET_DISPLAY_NAME = 'Elysium Mainnet';
+export const ELYSIUM_TESTNET_DISPLAY_NAME = 'Elysium Testnet';
+
 export const GOERLI_DISPLAY_NAME = 'Goerli';
 export const SEPOLIA_DISPLAY_NAME = 'Sepolia';
 export const LINEA_GOERLI_DISPLAY_NAME = 'Linea Goerli';
@@ -350,12 +357,17 @@ export const getRpcUrl = ({
 }: {
   network: NetworkType;
   excludeProjectId?: boolean;
-}) =>
-  `https://${network}.infura.io/v3/${excludeProjectId ? '' : infuraProjectId}`;
+}) => {
+  return `https://${network}.infura.io/v3/${
+    excludeProjectId ? '' : infuraProjectId
+  }`;
+};
 
 export const MAINNET_RPC_URL = getRpcUrl({
   network: NETWORK_TYPES.MAINNET,
 });
+export const ELYSIUM_MAINNET_RPC_URL = 'https://rpc.elysiumchain.tech/';
+export const ELYSIUM_TESTNET_RPC_URL = 'https://rpc.atlantischain.network/';
 export const GOERLI_RPC_URL = getRpcUrl({ network: NETWORK_TYPES.GOERLI });
 export const SEPOLIA_RPC_URL = getRpcUrl({ network: NETWORK_TYPES.SEPOLIA });
 export const LINEA_GOERLI_RPC_URL = getRpcUrl({
@@ -377,6 +389,7 @@ export const MONAD_TESTNET_RPC_URL = 'https://testnet-rpc.monad.xyz';
  * for supporting our feature set.
  */
 export const CURRENCY_SYMBOLS = {
+  ELY: 'ELY',
   ARBITRUM: 'ETH',
   AVALANCHE: 'AVAX',
   BNB: 'BNB',
@@ -421,6 +434,8 @@ const CHAINLIST_CURRENCY_SYMBOLS_MAP = {
   ...CURRENCY_SYMBOLS,
   ...NON_EVM_CURRENCY_SYMBOLS,
   BASE: 'ETH',
+  ELYSIUM_MAINNET: 'ELY',
+  ELYSIUM_TESTNET: 'ELY',
   LINEA_MAINNET: 'ETH',
   OPBNB: 'BNB',
   ZKSYNC_ERA: 'ETH',
@@ -493,7 +508,8 @@ export const CHAINLIST_CURRENCY_SYMBOLS_MAP_NETWORK_COLLISION = {
   WETHIO: 'ZYN',
   CHZ: 'CHZ',
 };
-
+export const ELYSIUM_MAINNET_IMAGE_URL = './images/green-logo-3.png';
+export const ELYSIUM_TESTNET_IMAGE_URL = './images/green-logo-3.png';
 export const ETH_TOKEN_IMAGE_URL = './images/eth_logo.svg';
 export const LINEA_GOERLI_TOKEN_IMAGE_URL = './images/linea-logo-testnet.png';
 export const LINEA_SEPOLIA_TOKEN_IMAGE_URL = './images/linea-logo-testnet.png';
@@ -610,9 +626,12 @@ export const INFURA_PROVIDER_TYPES = [
   NETWORK_TYPES.SEPOLIA,
   NETWORK_TYPES.LINEA_SEPOLIA,
   NETWORK_TYPES.LINEA_MAINNET,
+  // NETWORK_TYPES.ELYSIUM_MAINNET,
+  // NETWORK_TYPES.ELYSIUM_TESTNET,
 ] as const;
 
 export const TEST_CHAINS: Hex[] = [
+  CHAIN_IDS.ELYSIUM_TESTNET,
   CHAIN_IDS.SEPOLIA,
   CHAIN_IDS.LINEA_SEPOLIA,
   CHAIN_IDS.LOCALHOST,
@@ -620,11 +639,17 @@ export const TEST_CHAINS: Hex[] = [
   CHAIN_IDS.MONAD_TESTNET,
 ];
 
+ export const REMOVED_CHAINS: Hex[] = [
+  CHAIN_IDS.LINEA_MAINNET,
+  CHAIN_IDS.BASE,
+];
+
 export const CAIP_FORMATTED_EVM_TEST_CHAINS = TEST_CHAINS.map(
   (chainId) => `eip155:${hexToNumber(chainId)}`,
 );
 
 export const MAINNET_CHAINS = [
+  { chainId: CHAIN_IDS.ELYSIUM_MAINNET, rpcUrl: ELYSIUM_MAINNET_RPC_URL },
   { chainId: CHAIN_IDS.MAINNET, rpcUrl: MAINNET_RPC_URL },
   { chainId: CHAIN_IDS.LINEA_MAINNET, rpcUrl: LINEA_MAINNET_RPC_URL },
 ];
@@ -635,7 +660,7 @@ const typedCapitalize = <K extends string>(k: K): Capitalize<K> =>
 export const TEST_NETWORK_TICKER_MAP: {
   [K in Exclude<
     NetworkType,
-    'localhost' | 'mainnet' | 'rpc' | 'linea-mainnet'
+    'localhost' | 'mainnet' | 'rpc' | 'linea-mainnet' | 'elysium-mainnet'
   >]: string;
 } = {
   [NETWORK_TYPES.GOERLI]: `${typedCapitalize(NETWORK_TYPES.GOERLI)}${
@@ -648,26 +673,38 @@ export const TEST_NETWORK_TICKER_MAP: {
   [NETWORK_TYPES.LINEA_SEPOLIA]: `Linea${CURRENCY_SYMBOLS.ETH}`,
   [NETWORK_TYPES.MEGAETH_TESTNET]: 'MegaETH',
   [NETWORK_TYPES.MONAD_TESTNET]: 'MON',
+  [NETWORK_TYPES.ELYSIUM_TESTNET]: 'ELY',
+  // [NETWORK_TYPES.ELYSIUM_MAINNET]: 'ELY',
 };
 
 /**
  * Map of all build-in Infura networks to their network, ticker and chain IDs.
  */
 export const BUILT_IN_NETWORKS = {
-  [NETWORK_TYPES.SEPOLIA]: {
-    chainId: CHAIN_IDS.SEPOLIA,
-    ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.SEPOLIA],
-    blockExplorerUrl: `https://${NETWORK_TYPES.SEPOLIA}.etherscan.io`,
+  [NETWORK_TYPES.ELYSIUM_TESTNET]: {
+    chainId: CHAIN_IDS.ELYSIUM_TESTNET,
+    ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.ELYSIUM_TESTNET],
+    blockExplorerUrl: `https://explorer.atlantischain.network`,
   },
-  [NETWORK_TYPES.LINEA_SEPOLIA]: {
-    chainId: CHAIN_IDS.LINEA_SEPOLIA,
-    ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.LINEA_SEPOLIA],
-    blockExplorerUrl: 'https://sepolia.lineascan.build',
-  },
+  // [NETWORK_TYPES.SEPOLIA]: {
+  //   chainId: CHAIN_IDS.SEPOLIA,
+  //   ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.SEPOLIA],
+  //   blockExplorerUrl: `https://${NETWORK_TYPES.SEPOLIA}.etherscan.io`,
+  // },
+  // [NETWORK_TYPES.LINEA_SEPOLIA]: {
+  //   chainId: CHAIN_IDS.LINEA_SEPOLIA,
+  //   ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.LINEA_SEPOLIA],
+  //   blockExplorerUrl: 'https://sepolia.lineascan.build',
+  // },
   [NETWORK_TYPES.MAINNET]: {
     chainId: CHAIN_IDS.MAINNET,
     blockExplorerUrl: `https://etherscan.io`,
     ticker: CURRENCY_SYMBOLS.ETH,
+  },
+  [NETWORK_TYPES.ELYSIUM_MAINNET]: {
+    chainId: CHAIN_IDS.ELYSIUM_MAINNET,
+    blockExplorerUrl: `blockscout.elysiumchain.tech`,
+    ticker: CURRENCY_SYMBOLS.ELY,
   },
   [NETWORK_TYPES.LINEA_MAINNET]: {
     chainId: CHAIN_IDS.LINEA_MAINNET,
@@ -677,16 +714,16 @@ export const BUILT_IN_NETWORKS = {
   [NETWORK_TYPES.LOCALHOST]: {
     chainId: CHAIN_IDS.LOCALHOST,
   },
-  [NETWORK_TYPES.MEGAETH_TESTNET]: {
-    chainId: CHAIN_IDS.MEGAETH_TESTNET,
-    ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.MEGAETH_TESTNET],
-    blockExplorerUrl: 'https://megaexplorer.xyz',
-  },
-  [NETWORK_TYPES.MONAD_TESTNET]: {
-    chainId: CHAIN_IDS.MONAD_TESTNET,
-    ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.MONAD_TESTNET],
-    blockExplorerUrl: 'https://testnet.monadexplorer.com',
-  },
+  // [NETWORK_TYPES.MEGAETH_TESTNET]: {
+  //   chainId: CHAIN_IDS.MEGAETH_TESTNET,
+  //   ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.MEGAETH_TESTNET],
+  //   blockExplorerUrl: 'https://megaexplorer.xyz',
+  // },
+  // [NETWORK_TYPES.MONAD_TESTNET]: {
+  //   chainId: CHAIN_IDS.MONAD_TESTNET,
+  //   ticker: TEST_NETWORK_TICKER_MAP[NETWORK_TYPES.MONAD_TESTNET],
+  //   blockExplorerUrl: 'https://testnet.monadexplorer.com',
+  // },
 } as const;
 
 export const BUILT_IN_INFURA_NETWORKS = pick(
@@ -707,6 +744,8 @@ export type BuiltInInfuraNetwork = keyof typeof BUILT_IN_INFURA_NETWORKS;
 export const NETWORK_TO_NAME_MAP = {
   [NETWORK_TYPES.GOERLI]: GOERLI_DISPLAY_NAME,
   [NETWORK_TYPES.MAINNET]: MAINNET_DISPLAY_NAME,
+  [NETWORK_TYPES.ELYSIUM_MAINNET]: ELYSIUM_MAINNET_DISPLAY_NAME,
+  [NETWORK_TYPES.ELYSIUM_TESTNET]: ELYSIUM_TESTNET_DISPLAY_NAME,
   [NETWORK_TYPES.LINEA_GOERLI]: LINEA_GOERLI_DISPLAY_NAME,
   [NETWORK_TYPES.LINEA_SEPOLIA]: LINEA_SEPOLIA_DISPLAY_NAME,
   [NETWORK_TYPES.LINEA_MAINNET]: LINEA_MAINNET_DISPLAY_NAME,
@@ -753,6 +792,10 @@ export const NETWORK_TO_NAME_MAP = {
 } as const;
 
 export const CHAIN_ID_TO_CURRENCY_SYMBOL_MAP = {
+  [CHAINLIST_CHAIN_IDS_MAP.ELYSIUM_MAINNET]:
+    CHAINLIST_CURRENCY_SYMBOLS_MAP.ELYSIUM_MAINNET,
+  [CHAINLIST_CHAIN_IDS_MAP.ELYSIUM_TESTNET]:
+    CHAINLIST_CURRENCY_SYMBOLS_MAP.ELYSIUM_TESTNET,
   [CHAINLIST_CHAIN_IDS_MAP.AVALANCHE]: CHAINLIST_CURRENCY_SYMBOLS_MAP.AVALANCHE,
   [CHAINLIST_CHAIN_IDS_MAP.BSC]: CHAINLIST_CURRENCY_SYMBOLS_MAP.BNB,
   [CHAINLIST_CHAIN_IDS_MAP.BASE]: CHAINLIST_CURRENCY_SYMBOLS_MAP.BASE,
@@ -917,6 +960,8 @@ export const CHAIN_ID_TO_CURRENCY_SYMBOL_MAP_NETWORK_COLLISION = {
 
 export const CHAIN_ID_TO_TYPE_MAP = {
   [CHAIN_IDS.MAINNET]: NETWORK_TYPES.MAINNET,
+  [CHAIN_IDS.ELYSIUM_MAINNET]: NETWORK_TYPES.ELYSIUM_MAINNET,
+  [CHAIN_IDS.ELYSIUM_TESTNET]: NETWORK_TYPES.ELYSIUM_TESTNET,
   [CHAIN_IDS.GOERLI]: NETWORK_TYPES.GOERLI,
   [CHAIN_IDS.SEPOLIA]: NETWORK_TYPES.SEPOLIA,
   [CHAIN_IDS.LINEA_GOERLI]: NETWORK_TYPES.LINEA_GOERLI,
@@ -933,6 +978,8 @@ export const CHAIN_ID_TO_RPC_URL_MAP = {
   [CHAIN_IDS.LINEA_GOERLI]: LINEA_GOERLI_RPC_URL,
   [CHAIN_IDS.LINEA_SEPOLIA]: LINEA_SEPOLIA_RPC_URL,
   [CHAIN_IDS.MAINNET]: MAINNET_RPC_URL,
+  [CHAIN_IDS.ELYSIUM_MAINNET]: ELYSIUM_MAINNET_RPC_URL,
+  [CHAIN_IDS.ELYSIUM_TESTNET]: ELYSIUM_TESTNET_RPC_URL,
   [CHAIN_IDS.LINEA_MAINNET]: LINEA_MAINNET_RPC_URL,
   [CHAIN_IDS.LOCALHOST]: LOCALHOST_RPC_URL,
   [CHAIN_IDS.MEGAETH_TESTNET]: MEGAETH_TESTNET_RPC_URL,
@@ -941,6 +988,8 @@ export const CHAIN_ID_TO_RPC_URL_MAP = {
 
 export const CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP: Record<string, string> = {
   [CHAIN_IDS.MAINNET]: ETH_TOKEN_IMAGE_URL,
+  [CHAIN_IDS.ELYSIUM_MAINNET]: ELYSIUM_MAINNET_IMAGE_URL,
+  [CHAIN_IDS.ELYSIUM_TESTNET]: ELYSIUM_MAINNET_IMAGE_URL,
   [CHAIN_IDS.LINEA_GOERLI]: LINEA_GOERLI_TOKEN_IMAGE_URL,
   [CHAIN_IDS.LINEA_SEPOLIA]: LINEA_SEPOLIA_TOKEN_IMAGE_URL,
   [CHAIN_IDS.LINEA_MAINNET]: LINEA_MAINNET_TOKEN_IMAGE_URL,
@@ -1058,6 +1107,8 @@ export const CHAIN_ID_TO_ETHERS_NETWORK_NAME_MAP = {
   [CHAIN_IDS.LINEA_GOERLI]: NETWORK_TYPES.LINEA_GOERLI,
   [CHAIN_IDS.LINEA_SEPOLIA]: NETWORK_TYPES.LINEA_SEPOLIA,
   [CHAIN_IDS.MAINNET]: NETWORK_NAMES.HOMESTEAD,
+  [CHAIN_IDS.ELYSIUM_MAINNET]: NETWORK_TYPES.ELYSIUM_MAINNET,
+  [CHAIN_IDS.ELYSIUM_TESTNET]: NETWORK_TYPES.ELYSIUM_TESTNET,
   [CHAIN_IDS.LINEA_MAINNET]: NETWORK_TYPES.LINEA_MAINNET,
   [CHAIN_IDS.MEGAETH_TESTNET]: NETWORK_TYPES.MEGAETH_TESTNET,
   [CHAIN_IDS.MONAD_TESTNET]: NETWORK_TYPES.MONAD_TESTNET,
@@ -1065,6 +1116,8 @@ export const CHAIN_ID_TO_ETHERS_NETWORK_NAME_MAP = {
 
 export const CHAIN_ID_TOKEN_IMAGE_MAP = {
   [CHAIN_IDS.MAINNET]: ETH_TOKEN_IMAGE_URL,
+  [CHAIN_IDS.ELYSIUM_MAINNET]: ELYSIUM_MAINNET_IMAGE_URL,
+  [CHAIN_IDS.ELYSIUM_TESTNET]: ELYSIUM_MAINNET_IMAGE_URL,
   [CHAIN_IDS.TEST_ETH]: TEST_ETH_TOKEN_IMAGE_URL,
   [CHAIN_IDS.ARBITRUM]: ETH_TOKEN_IMAGE_URL,
   [CHAIN_IDS.BASE]: ETH_TOKEN_IMAGE_URL,
@@ -1138,6 +1191,14 @@ const defaultEtherscanSubdomainPrefix = 'api';
  * Map of all Etherscan supported networks.
  */
 export const ETHERSCAN_SUPPORTED_NETWORKS = {
+  [CHAIN_IDS.ELYSIUM_MAINNET]: {
+    domain: 'elysiumchain.tech/api',
+    subdomain: 'blockscout',
+  },
+  [CHAIN_IDS.ELYSIUM_TESTNET]: {
+    domain: 'atlantischain.network/api',
+    subdomain: 'explorer',
+  },
   [CHAIN_IDS.GOERLI]: {
     domain: defaultEtherscanDomain,
     subdomain: `${defaultEtherscanSubdomainPrefix}-${
@@ -1322,21 +1383,51 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     blockExplorerUrls: ['https://bscscan.com/'],
     defaultBlockExplorerUrlIndex: 0,
   },
+  // {
+  //   chainId: CHAIN_IDS.ELYSIUM_MAINNET,
+  //   name: ELYSIUM_MAINNET_DISPLAY_NAME,
+  //   nativeCurrency: CURRENCY_SYMBOLS.ELY,
+  //   rpcEndpoints: [
+  //     {
+  //       url: 'https://rpc.elysiumchain.tech/',
+  //       failoverUrls: ['https://rpc.elysiumchain.us/'],
+  //       type: RpcEndpointType.Custom,
+  //     },
+  //   ],
+  //   defaultRpcEndpointIndex: 0,
+  //   blockExplorerUrls: ['https://blockscout.elysiumchain.tech/'],
+  //   defaultBlockExplorerUrlIndex: 0,
+  // }
   {
-    chainId: CHAIN_IDS.OPTIMISM,
-    name: OPTIMISM_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.ETH,
+    chainId: CHAIN_IDS.ELYSIUM_TESTNET,
+    name: ELYSIUM_TESTNET_DISPLAY_NAME,
+    nativeCurrency: CURRENCY_SYMBOLS.ELY,
     rpcEndpoints: [
       {
-        url: `https://optimism-mainnet.infura.io/v3/${infuraProjectId}`,
-        failoverUrls: getFailoverUrlsForInfuraNetwork('optimism-mainnet'),
+        url: 'https://rpc.atlantischain.network/',
+        failoverUrls: ['https://rpc.atlantischain.network/'],
         type: RpcEndpointType.Custom,
       },
     ],
     defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+    blockExplorerUrls: ['https://explorer.atlantischain.network/'],
     defaultBlockExplorerUrlIndex: 0,
   },
+  // {
+  //   chainId: CHAIN_IDS.OPTIMISM,
+  //   name: OPTIMISM_DISPLAY_NAME,
+  //   nativeCurrency: CURRENCY_SYMBOLS.ETH,
+  //   rpcEndpoints: [
+  //     {
+  //       url: `https://optimism-mainnet.infura.io/v3/${infuraProjectId}`,
+  //       failoverUrls: getFailoverUrlsForInfuraNetwork('optimism-mainnet'),
+  //       type: RpcEndpointType.Custom,
+  //     },
+  //   ],
+  //   defaultRpcEndpointIndex: 0,
+  //   blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+  //   defaultBlockExplorerUrlIndex: 0,
+  // },
   {
     chainId: CHAIN_IDS.POLYGON,
     name: `${POLYGON_DISPLAY_NAME} ${capitalize(NETWORK_TYPES.MAINNET)}`,
@@ -1352,53 +1443,55 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     blockExplorerUrls: ['https://polygonscan.com/'],
     defaultBlockExplorerUrlIndex: 0,
   },
-  {
-    chainId: CHAIN_IDS.ZKSYNC_ERA,
-    name: ZK_SYNC_ERA_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.ETH,
-    rpcEndpoints: [
-      {
-        url: `https://mainnet.era.zksync.io`,
-        failoverUrls: [],
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://explorer.zksync.io/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
-    chainId: CHAIN_IDS.SEI,
-    name: SEI_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.SEI,
-    rpcEndpoints: [
-      {
-        url: `https://sei-mainnet.infura.io/v3/${infuraProjectId}`,
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://seitrace.com/'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
-  {
-    chainId: CHAIN_IDS.BASE,
-    name: BASE_DISPLAY_NAME,
-    nativeCurrency: CURRENCY_SYMBOLS.ETH,
-    rpcEndpoints: [
-      {
-        url: `https://base-mainnet.infura.io/v3/${infuraProjectId}`,
-        failoverUrls: getFailoverUrlsForInfuraNetwork('base-mainnet'),
-        type: RpcEndpointType.Custom,
-      },
-    ],
-    defaultRpcEndpointIndex: 0,
-    blockExplorerUrls: ['https://basescan.org'],
-    defaultBlockExplorerUrlIndex: 0,
-  },
+  // {
+  //   chainId: CHAIN_IDS.ZKSYNC_ERA,
+  //   name: ZK_SYNC_ERA_DISPLAY_NAME,
+  //   nativeCurrency: CURRENCY_SYMBOLS.ETH,
+  //   rpcEndpoints: [
+  //     {
+  //       url: `https://mainnet.era.zksync.io`,
+  //       failoverUrls: [],
+  //       type: RpcEndpointType.Custom,
+  //     },
+  //   ],
+  //   defaultRpcEndpointIndex: 0,
+  //   blockExplorerUrls: ['https://explorer.zksync.io/'],
+  //   defaultBlockExplorerUrlIndex: 0,
+  // },
+  // {
+  //   chainId: CHAIN_IDS.SEI,
+  //   name: SEI_DISPLAY_NAME,
+  //   nativeCurrency: CURRENCY_SYMBOLS.SEI,
+  //   rpcEndpoints: [
+  //     {
+  //       url: `https://sei-mainnet.infura.io/v3/${infuraProjectId}`,
+  //       type: RpcEndpointType.Custom,
+  //     },
+  //   ],
+  //   defaultRpcEndpointIndex: 0,
+  //   blockExplorerUrls: ['https://seitrace.com/'],
+  //   defaultBlockExplorerUrlIndex: 0,
+  // },
+  // {
+  //   chainId: CHAIN_IDS.BASE,
+  //   name: BASE_DISPLAY_NAME,
+  //   nativeCurrency: CURRENCY_SYMBOLS.ETH,
+  //   rpcEndpoints: [
+  //     {
+  //       url: `https://base-mainnet.infura.io/v3/${infuraProjectId}`,
+  //       failoverUrls: getFailoverUrlsForInfuraNetwork('base-mainnet'),
+  //       type: RpcEndpointType.Custom,
+  //     },
+  //   ],
+  //   defaultRpcEndpointIndex: 0,
+  //   blockExplorerUrls: ['https://basescan.org'],
+  //   defaultBlockExplorerUrlIndex: 0,
+  // },
 ];
 
 export const FEATURED_NETWORK_CHAIN_IDS = [
+  CHAIN_IDS.ELYSIUM_MAINNET,
+  CHAIN_IDS.ELYSIUM_TESTNET,
   CHAIN_IDS.MAINNET,
   ...FEATURED_RPCS.map((rpc) => rpc.chainId),
 ];
@@ -1423,6 +1516,12 @@ export const infuraChainIdsTestNets: string[] = [
 ];
 
 export const allowedInfuraHosts = [
+  // Elysium Testnet
+  'explorer.atlantischain.network',
+  // Elysium
+  'blockscout.elysiumchain.tech',
+  // Elysium Website
+  'elysiumchain.tech',
   // Ethereum
   'mainnet.infura.io',
   // Linea
@@ -1485,6 +1584,7 @@ export enum NetworkStatus {
 }
 
 export const TEST_NETWORKS = [
+  ELYSIUM_TESTNET_DISPLAY_NAME,
   GOERLI_DISPLAY_NAME,
   SEPOLIA_DISPLAY_NAME,
   LINEA_GOERLI_DISPLAY_NAME,
@@ -1494,6 +1594,7 @@ export const TEST_NETWORKS = [
 ];
 
 export const TEST_NETWORK_IDS = [
+  CHAIN_IDS.ELYSIUM_TESTNET,
   CHAIN_IDS.GOERLI,
   CHAIN_IDS.SEPOLIA,
   CHAIN_IDS.LINEA_GOERLI,

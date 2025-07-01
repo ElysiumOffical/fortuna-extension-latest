@@ -51,7 +51,7 @@ import { AnnouncementController } from '@metamask/announcement-controller';
 import {
   NetworkController,
   getDefaultNetworkControllerState,
-} from '@metamask/network-controller';
+} from '@fortuna-wallet/network-controller';
 import { GasFeeController } from '@metamask/gas-fee-controller';
 import {
   MethodNames,
@@ -85,7 +85,7 @@ import {
   BlockExplorerUrl,
   ChainId,
   handleFetch,
-} from '@metamask/controller-utils';
+} from '@fortuna-wallet/controller-utils';
 
 import { AccountsController } from '@metamask/accounts-controller';
 import {
@@ -587,8 +587,10 @@ export default class MetamaskController extends EventEmitter {
 
     let initialNetworkControllerState = initState.NetworkController;
     const additionalDefaultNetworks = [
-      ChainId['megaeth-testnet'],
-      ChainId['monad-testnet'],
+      ChainId['elysium-mainnet'],
+      ChainId['elysium-testnet'],
+      // ChainId['megaeth-testnet'],
+      // ChainId['monad-testnet'],
     ];
 
     if (!initialNetworkControllerState) {
@@ -596,14 +598,14 @@ export default class MetamaskController extends EventEmitter {
         additionalDefaultNetworks,
       );
 
-      /** @type {import('@metamask/network-controller').NetworkState['networkConfigurationsByChainId']} */
+      /** @type {import('@fortuna-wallet/network-controller').NetworkState['networkConfigurationsByChainId']} */
       const networks =
         initialNetworkControllerState.networkConfigurationsByChainId;
 
       // TODO: Consider changing `getDefaultNetworkControllerState` on the
       // controller side to include some of these tweaks.
-
       Object.values(networks).forEach((network) => {
+        console.log("network : ",network)
         const id = network.rpcEndpoints[0].networkClientId;
         // Process only if the default network has a corresponding networkClientId in BlockExplorerUrl.
         if (hasProperty(BlockExplorerUrl, id)) {
@@ -642,9 +644,9 @@ export default class MetamaskController extends EventEmitter {
         process.env.METAMASK_DEBUG ||
         process.env.METAMASK_ENVIRONMENT === 'test'
       ) {
-        network = networks[CHAIN_IDS.SEPOLIA];
+        network = networks[CHAIN_IDS.ELYSIUM_TESTNET];
       } else {
-        network = networks[CHAIN_IDS.MAINNET];
+        network = networks[CHAIN_IDS.ELYSIUM_MAINNET];
       }
 
       initialNetworkControllerState.selectedNetworkClientId =
@@ -672,7 +674,7 @@ export default class MetamaskController extends EventEmitter {
 
       initialNetworkControllerState.selectedNetworkClientId =
         initialNetworkControllerState.networkConfigurationsByChainId[
-          CHAIN_IDS.MAINNET
+          CHAIN_IDS.ELYSIUM_MAINNET
         ].rpcEndpoints[0].networkClientId;
     }
 
@@ -7700,7 +7702,7 @@ export default class MetamaskController extends EventEmitter {
       },
       getHDEntropyIndex: this.getHDEntropyIndex.bind(this),
       getNetworkRpcUrl: (chainId) => {
-        // TODO: Move to @metamask/network-controller
+        // TODO: Move to @fortuna-wallet/network-controller
         try {
           const networkClientId =
             this.networkController.findNetworkClientIdByChainId(chainId);

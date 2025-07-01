@@ -490,7 +490,9 @@ export const NetworkListMenu = ({ onClose }: NetworkListMenuProps) => {
       const isDeletable =
         isUnlocked &&
         network.chainId !== currentChainId &&
-        network.chainId !== EthScope.Mainnet;
+        network.chainId !== EthScope.Mainnet ||
+        network.chainId !== "eip155:1339";
+
 
       return {
         onDelete: isDeletable

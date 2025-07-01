@@ -1,19 +1,19 @@
 export const FIXTURES_NETWORKS = {
   providerConfig: {
-    chainId: '0xaa36a7',
+    chainId: '0x53a',
     rpcPrefs: {
-      blockExplorerUrl: 'https://sepolia.etherscan.io',
+      blockExplorerUrl: 'https://explorer.atlantischain.network/',
     },
-    ticker: 'SepoliaETH',
-    type: 'sepolia',
+    ticker: 'TestnetELY',
+    type: 'elysium-testnet',
   },
   networkConfigurations: {
     networkConfigurationId: {
-      chainId: '0xaa36a7',
-      nickname: 'Sepolia',
+      chainId: '0x53a',
+      nickname: 'Elysium Testnet',
       rpcPrefs: {},
-      rpcUrl: 'https://sepolia.infura.io/v3/',
-      ticker: 'SepoliaETH',
+      rpcUrl: 'https://rpc.atlantischain.network/',
+      ticker: 'TestnetELY',
       networkConfigurationId: 'networkConfigurationId',
     },
     optimism: {

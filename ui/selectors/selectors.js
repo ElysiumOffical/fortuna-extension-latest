@@ -1,6 +1,6 @@
 import { toUnicode } from 'punycode/punycode.js';
 import { SubjectType } from '@metamask/permission-controller';
-import { ApprovalType } from '@metamask/controller-utils';
+import { ApprovalType } from '@fortuna-wallet/controller-utils';
 import {
   stripSnapPrefix,
   getLocalizedSnapManifest,
@@ -12,7 +12,7 @@ import { createSelector } from 'reselect';
 import { NameType } from '@metamask/name-controller';
 import { TransactionStatus } from '@metamask/transaction-controller';
 import { isEvmAccountType } from '@metamask/keyring-api';
-import { RpcEndpointType } from '@metamask/network-controller';
+import { RpcEndpointType } from '@fortuna-wallet/network-controller';
 import {
   SnapEndowments,
   WALLET_SNAP_PERMISSION_KEY,
@@ -1189,7 +1189,7 @@ export const getNetworkConfigurationIdByChainId = createDeepEqualSelector(
 );
 
 /**
- * @type (state: any, chainId: string) => import('@metamask/network-controller').NetworkConfiguration
+ * @type (state: any, chainId: string) => import('@fortuna-wallet/network-controller').NetworkConfiguration
  */
 export const selectNetworkConfigurationByChainId = createSelector(
   getNetworkConfigurationsByChainId,
