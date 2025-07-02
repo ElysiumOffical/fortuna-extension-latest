@@ -32,22 +32,22 @@ async function start() {
         })
         .option('build-type', {
           default: loadBuildTypesConfig().default,
-          description: 'The MetaMask extension build type',
+          description: 'The Fortuna extension build type',
           choices: Object.keys(loadBuildTypesConfig().buildTypes),
         })
         .option('build-version', {
           default: 0,
-          description: 'The MetaMask extension build version',
+          description: 'The Fortuna extension build version',
           type: 'number',
         })
         .option('dist', {
           description:
-            'The MetaMask extension build distribution (typically for MV2 builds, omit for MV3)',
+            'The Fortuna extension build distribution (typically for MV2 builds, omit for MV3)',
           type: 'string',
         })
         .option('dist-directory', {
           default: 'dist',
-          description: 'The MetaMask extension build dist directory path',
+          description: 'The Fortuna extension build dist directory path',
           type: 'string',
         }),
   );

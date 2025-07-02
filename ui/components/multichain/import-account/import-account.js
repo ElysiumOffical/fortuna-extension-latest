@@ -44,10 +44,30 @@ export const ImportAccount = ({ onActionComplete }) => {
       const { selectedAddress } = await dispatch(
         actions.importNewAccount(strategy, importArgs, loadingMessage),
       );
+
       if (selectedAddress) {
         trackImportEvent(strategy, true);
         dispatch(actions.hideWarning());
         onActionComplete(true);
+        await dispatch(
+          actions.addToken({
+address:"0xa801b1A7846156d4C81bD188F96bfcb621517611",
+decimals:18,
+symbol:'PYR',
+image:'https://s2.coinmarketcap.com/static/img/coins/64x64/9308.png',
+networkClientId:'elysium-mainnet'
+        }),
+        )
+        await dispatch(
+          actions.addToken({
+address:"0x039b0BeF564D9E110B8Bcfb34Ad541Cd8e7453C0",
+decimals:18,
+symbol:'V',
+image:'https://vdrip.vulcanx.exchange/images/icon-fair-v.png',
+networkClientId:'elysium-mainnet'
+        }),
+        )
+
       } else {
         dispatch(actions.displayWarning(t('importAccountError')));
         return false;

@@ -623,9 +623,9 @@ export const ABSTRACT_IMAGE_URL = './images/abstract.svg';
 
 export const INFURA_PROVIDER_TYPES = [
   NETWORK_TYPES.MAINNET,
-  NETWORK_TYPES.SEPOLIA,
-  NETWORK_TYPES.LINEA_SEPOLIA,
-  NETWORK_TYPES.LINEA_MAINNET,
+  // NETWORK_TYPES.SEPOLIA,
+  // NETWORK_TYPES.LINEA_SEPOLIA,
+  // NETWORK_TYPES.LINEA_MAINNET,
   // NETWORK_TYPES.ELYSIUM_MAINNET,
   // NETWORK_TYPES.ELYSIUM_TESTNET,
 ] as const;
@@ -706,11 +706,11 @@ export const BUILT_IN_NETWORKS = {
     blockExplorerUrl: `blockscout.elysiumchain.tech`,
     ticker: CURRENCY_SYMBOLS.ELY,
   },
-  [NETWORK_TYPES.LINEA_MAINNET]: {
-    chainId: CHAIN_IDS.LINEA_MAINNET,
-    blockExplorerUrl: 'https://lineascan.build',
-    ticker: CURRENCY_SYMBOLS.ETH,
-  },
+  // [NETWORK_TYPES.LINEA_MAINNET]: {
+  //   chainId: CHAIN_IDS.LINEA_MAINNET,
+  //   blockExplorerUrl: 'https://lineascan.build',
+  //   ticker: CURRENCY_SYMBOLS.ETH,
+  // },
   [NETWORK_TYPES.LOCALHOST]: {
     chainId: CHAIN_IDS.LOCALHOST,
   },

@@ -2216,7 +2216,7 @@ export function addImportedTokens(
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async (dispatch: MetaMaskReduxDispatch) => {
     try {
-      await submitRequestToBackground('addImportedTokens', [
+        await submitRequestToBackground('addImportedTokens', [
         tokensToImport,
         networkClientId,
       ]);

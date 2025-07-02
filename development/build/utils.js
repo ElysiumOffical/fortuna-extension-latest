@@ -269,7 +269,7 @@ function getBuildName({
 
   let name =
     config.buildTypes[buildType].buildNameOverride ||
-    `MetaMask ${capitalize(buildType)}`;
+    `Fortuna ${capitalize(buildType)}`;
 
   if (environment !== ENVIRONMENT.PRODUCTION) {
     const mv3Str = isManifestV3 ? ' MV3' : '';

@@ -441,7 +441,7 @@
     "@babel/preset-typescript": "^7.25.9",
     "@babel/register": "^7.25.9",
     "@jest/globals": "^29.7.0",
-    "@lavamoat/allow-scripts": "^3.3.1",
+    "@lavamoat/allow-scripts": "^3.3.4",
     "@lavamoat/lavadome-core": "0.0.20",
     "@lavamoat/lavapack": "^7.0.5",
     "@lydell/node-pty": "^1.1.0",

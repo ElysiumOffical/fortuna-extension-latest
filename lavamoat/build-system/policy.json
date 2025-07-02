@@ -9,6 +9,7 @@
         "terser-webpack-plugin>@jridgewell/trace-mapping": true
       }
     },
+
     "@babel/code-frame": {
       "globals": {
         "console.warn": true,
@@ -685,6 +686,8 @@
         "process.env.BABEL_ENV": true
       },
       "packages": {
+        "@fortuna-wallet/controller-utils":true,
+        "@fortuna-wallet/network-controller":true,
         "@babel/preset-env>@babel/compat-data": true,
         "@babel/core>@babel/helper-compilation-targets": true,
         "@babel/preset-env>@babel/helper-plugin-utils": true,

@@ -100,7 +100,7 @@ const TokenButtons = ({
     getIsBridgeChain(state, isEvm ? currentChainId : multichainChainId),
   );
   const isBuyableChain = useSelector(getIsNativeTokenBuyable);
-  const { openBuyCryptoInPdapp } = useRamps();
+  const { openBuyCryptoInPdapp,openLinks } = useRamps();
   const { openBridgeExperience } = useBridging();
 
   ///: BEGIN:ONLY_INCLUDE_IF(multichain)
@@ -143,16 +143,6 @@ const TokenButtons = ({
 
   const handleBuyAndSellOnClick = useCallback(() => {
     openBuyCryptoInPdapp();
-    trackEvent({
-      event: MetaMetricsEventName.NavBuyButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        location: 'Token Overview',
-        text: 'Buy',
-        chain_id: currentChainId,
-        token_symbol: token.symbol,
-      },
-    });
   }, [currentChainId, token.symbol, trackEvent, openBuyCryptoInPdapp]);
 
   const handleSendOnClick = useCallback(async () => {
@@ -282,7 +272,7 @@ const TokenButtons = ({
       gap={3}
       justifyContent={JustifyContent.spaceEvenly}
     >
-      <IconButton
+      {/* <IconButton
         className="token-overview__button"
         Icon={
           displayNewIconButtons ? (
@@ -306,7 +296,7 @@ const TokenButtons = ({
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         disabled={token.isERC721 || !isBuyableChain}
         round={!displayNewIconButtons}
-      />
+      /> */}
 
       <IconButton
         className="token-overview__button"
@@ -349,9 +339,9 @@ const TokenButtons = ({
             />
           )
         }
-        onClick={handleSwapOnClick}
+        onClick={handleBuyAndSellOnClick}
         label={t('swap')}
-        disabled={!isSwapsChain}
+        // disabled={!isSwapsChain}
         round={!displayNewIconButtons}
       />
       {displayNewIconButtons ? null : (
@@ -374,8 +364,8 @@ const TokenButtons = ({
             )
           }
           label={t('bridge')}
-          onClick={() => handleBridgeOnClick(false)}
-          disabled={!isBridgeChain}
+          onClick={() => openLinks('https://bridge.elysiumchain.tech/')}
+          // disabled={!isBridgeChain}
           round={!displayNewIconButtons}
         />
       )}

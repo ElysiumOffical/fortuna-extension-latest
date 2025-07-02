@@ -137,11 +137,11 @@ const CoinButtons = ({
       { condition: !isSigningEnabled, message: 'methodNotSupported' },
     ],
     swapButton: [
-      { condition: !isSwapsChain, message: 'currentlyUnavailable' },
+      { condition: false, message: 'currentlyUnavailable' },
       { condition: !isSigningEnabled, message: 'methodNotSupported' },
     ],
     bridgeButton: [
-      { condition: !isBridgeChain, message: 'currentlyUnavailable' },
+      { condition: false, message: 'currentlyUnavailable' },
       { condition: !isSigningEnabled, message: 'methodNotSupported' },
     ],
   };
@@ -191,7 +191,7 @@ const CoinButtons = ({
     return {};
   };
 
-  const { openBuyCryptoInPdapp } = useRamps();
+  const { openBuyCryptoInPdapp,openLinks } = useRamps();
 
   const { openBridgeExperience } = useBridging();
 
@@ -258,78 +258,70 @@ const CoinButtons = ({
 
   const handleBuyAndSellOnClick = useCallback(() => {
     openBuyCryptoInPdapp(getChainId());
-    trackEvent({
-      event: MetaMetricsEventName.NavBuyButtonClicked,
-      category: MetaMetricsEventCategory.Navigation,
-      properties: {
-        account_type: account.type,
-        location: 'Home',
-        text: 'Buy',
-        chain_id: chainId,
-        token_symbol: defaultSwapsToken,
-        ...getSnapAccountMetaMetricsPropertiesIfAny(account),
-      },
-    });
+    // trackEvent({
+    //   event: MetaMetricsEventName.NavBuyButtonClicked,
+    //   category: MetaMetricsEventCategory.Navigation,
+    //   properties: {
+    //     account_type: account.type,
+    //     location: 'Home',
+    //     text: 'Buy',
+    //     chain_id: chainId,
+    //     token_symbol: defaultSwapsToken,
+    //     ...getSnapAccountMetaMetricsPropertiesIfAny(account),
+    //   },
+    // });
   }, [chainId, defaultSwapsToken]);
 
-  const handleBridgeOnClick = useCallback(
-    async (isSwap: boolean) => {
-      if (!defaultSwapsToken) {
-        return;
-      }
-      await setCorrectChain();
-      openBridgeExperience(
-        MetaMetricsSwapsEventSource.MainView,
-        defaultSwapsToken,
-        location.pathname.includes('asset') ? '&token=native' : '',
-        isSwap,
-      );
+
+  const handleBridgeOnClick = useCallback(() => {
+         openBuyCryptoInPdapp(getChainId());
+
     },
-    [defaultSwapsToken, location, openBridgeExperience],
+    [defaultSwapsToken, chainId],
   );
 
-  const handleSwapOnClick = useCallback(async () => {
-    if (isUnifiedUIEnabled) {
-      handleBridgeOnClick(true);
-      return;
-    }
-    ///: BEGIN:ONLY_INCLUDE_IF(solana-swaps)
-    if (multichainChainId === MultichainNetworks.SOLANA) {
-      handleBridgeOnClick(true);
-      return;
-    }
-    ///: END:ONLY_INCLUDE_IF
+  // const handleSwapOnClick = useCallback(async () => {
+  //   if (isUnifiedUIEnabled) {
+  //     handleBridgeOnClick(true);
+  //     return;
+  //   }
+  //   ///: BEGIN:ONLY_INCLUDE_IF(solana-swaps)
+  //   if (multichainChainId === MultichainNetworks.SOLANA) {
+  //     handleBridgeOnClick(true);
+  //     return;
+  //   }
+  //   ///: END:ONLY_INCLUDE_IF
 
-    await setCorrectChain();
+  //   await setCorrectChain();
 
-    if (isSwapsChain) {
-      trackEvent({
-        event: MetaMetricsEventName.NavSwapButtonClicked,
-        category: MetaMetricsEventCategory.Swaps,
-        properties: {
-          token_symbol: 'ETH',
-          location: MetaMetricsSwapsEventSource.MainView,
-          text: 'Swap',
-          chain_id: chainId,
-        },
-      });
-      dispatch(setSwapsFromToken(defaultSwapsToken));
-      if (usingHardwareWallet) {
-        if (global.platform.openExtensionInBrowser) {
-          global.platform.openExtensionInBrowser(PREPARE_SWAP_ROUTE);
-        }
-      } else {
-        history.push(PREPARE_SWAP_ROUTE);
-      }
-    }
-  }, [
-    setCorrectChain,
-    isSwapsChain,
-    chainId,
-    isUnifiedUIEnabled,
-    usingHardwareWallet,
-    defaultSwapsToken,
-  ]);
+  //   if (isSwapsChain) {
+  //     trackEvent({
+  //       event: MetaMetricsEventName.NavSwapButtonClicked,
+  //       category: MetaMetricsEventCategory.Swaps,
+  //       properties: {
+  //         token_symbol: 'ETH',
+  //         location: MetaMetricsSwapsEventSource.MainView,
+  //         text: 'Swap',
+  //         chain_id: chainId,
+  //       },
+  //     });
+  //     dispatch(setSwapsFromToken(defaultSwapsToken));
+  //     if (usingHardwareWallet) {
+  //       if (global.platform.openExtensionInBrowser) {
+  //         global.platform.openExtensionInBrowser(PREPARE_SWAP_ROUTE);
+  //       }
+  //     } else {
+  //       history.push(PREPARE_SWAP_ROUTE);
+  //     }
+  //   }
+  // }, [
+  //   setCorrectChain,
+  //   isSwapsChain,
+  //   chainId,
+  //   isUnifiedUIEnabled,
+  //   usingHardwareWallet,
+  //   defaultSwapsToken,
+  // ]);
 
   return (
     <Box
@@ -338,7 +330,7 @@ const CoinButtons = ({
       width={BlockSize.Full}
       gap={3}
     >
-      {
+      {/* {
         <IconButton
           className={`${classPrefix}-overview__button`}
           Icon={
@@ -366,13 +358,12 @@ const CoinButtons = ({
           }
           round={!displayNewIconButtons}
         />
-      }
+      } */}
       <IconButton
         className={`${classPrefix}-overview__button`}
         disabled={
-          (!isSwapsChain && !isUnifiedUIEnabled) ||
-          !isSigningEnabled ||
-          !isExternalServicesEnabled
+          // ( !isUnifiedUIEnabled) ||
+          !isSigningEnabled
         }
         Icon={
           displayNewIconButtons ? (
@@ -389,8 +380,8 @@ const CoinButtons = ({
             />
           )
         }
-        onClick={handleSwapOnClick}
-        label={t('swap')}
+        onClick={handleBuyAndSellOnClick}
+        label={'Swap'}
         data-testid="token-overview-button-swap"
         width={BlockSize.Full}
         tooltipRender={(contents: React.ReactElement) =>
@@ -402,8 +393,7 @@ const CoinButtons = ({
         <IconButton
           className={`${classPrefix}-overview__button`}
           disabled={
-            !isBridgeChain ||
-            !isSigningEnabled ||
+            // !isSigningEnabled ||
             isNonEvmAccountWithoutExternalServices
           }
           data-testid={`${classPrefix}-overview-bridge`}
@@ -422,8 +412,8 @@ const CoinButtons = ({
               />
             )
           }
-          label={t('bridge')}
-          onClick={() => handleBridgeOnClick(false)}
+          label={'Bridge'}
+          onClick={() => openLinks('https://bridge.elysiumchain.tech/')}
           width={BlockSize.Full}
           tooltipRender={(contents: React.ReactElement) =>
             generateTooltip('bridgeButton', contents)

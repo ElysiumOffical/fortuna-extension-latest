@@ -30,6 +30,8 @@ import {
   createNewVaultAndGetSeedPhrase,
   unlockAndGetSeedPhrase,
   createNewVaultAndRestore,
+  addToken,
+  removeNetwork
 } from '../../store/actions';
 import {
   getFirstTimeFlowTypeRouteAfterUnlock,
@@ -146,6 +148,29 @@ export default function OnboardingFlow() {
     const newSecretRecoveryPhrase = await dispatch(
       createNewVaultAndGetSeedPhrase(password),
     );
+    await  dispatch(removeNetwork('eip155:8453'));
+    await  dispatch(removeNetwork('eip155:59144'));
+    await  dispatch(removeNetwork('eip155:11155111'));
+    await  dispatch(removeNetwork('eip155:59141'));
+
+     await dispatch(
+                      addToken({
+            address:"0xa801b1A7846156d4C81bD188F96bfcb621517611",
+            decimals:18,
+            symbol:'PYR',
+            image:'https://s2.coinmarketcap.com/static/img/coins/64x64/9308.png',
+            networkClientId:'elysium-mainnet'
+                    }),
+                    )
+                    await dispatch(
+                      addToken({
+            address:"0x039b0BeF564D9E110B8Bcfb34Ad541Cd8e7453C0",
+            decimals:18,
+            symbol:'V',
+            image:'https://vdrip.vulcanx.exchange/images/icon-fair-v.png',
+            networkClientId:'elysium-mainnet'
+                    }),
+                    )
     setSecretRecoveryPhrase(newSecretRecoveryPhrase);
   };
 
@@ -158,6 +183,29 @@ export default function OnboardingFlow() {
   };
 
   const handleImportWithRecoveryPhrase = async (password, srp) => {
+     await  dispatch(removeNetwork('eip155:8453'));
+    await  dispatch(removeNetwork('eip155:59144'));
+    await  dispatch(removeNetwork('eip155:11155111'));
+    await  dispatch(removeNetwork('eip155:59141'));
+
+     await dispatch(
+                      addToken({
+            address:"0xa801b1A7846156d4C81bD188F96bfcb621517611",
+            decimals:18,
+            symbol:'PYR',
+            image:'https://s2.coinmarketcap.com/static/img/coins/64x64/9308.png',
+            networkClientId:'elysium-mainnet'
+                    }),
+                    )
+                    await dispatch(
+                      addToken({
+            address:"0x039b0BeF564D9E110B8Bcfb34Ad541Cd8e7453C0",
+            decimals:18,
+            symbol:'V',
+            image:'https://vdrip.vulcanx.exchange/images/icon-fair-v.png',
+            networkClientId:'elysium-mainnet'
+                    }),
+                    )
     return await dispatch(createNewVaultAndRestore(password, srp));
   };
 

@@ -253,6 +253,7 @@ export const ImportTokensModal = ({ onClose }) => {
 
       const promiseAllImport = Object.keys(addedTokensByChain).map(
         (networkId) => {
+
           const clientId =
             networkConfigurations[networkId]?.rpcEndpoints[
               networkConfigurations[networkId]?.defaultRpcEndpointIndex

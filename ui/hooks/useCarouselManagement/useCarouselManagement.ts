@@ -91,9 +91,9 @@ export const useCarouselManagement = ({
     if (!isSolanaAddress(selectedAccount.address)) {
       defaultSlides.push(SMART_ACCOUNT_UPGRADE_SLIDE);
     }
-    defaultSlides.push(BRIDGE_SLIDE);
-    defaultSlides.push(CARD_SLIDE);
-    defaultSlides.push(CASH_SLIDE);
+    // defaultSlides.push(BRIDGE_SLIDE);
+    // defaultSlides.push(CARD_SLIDE);
+    // defaultSlides.push(CASH_SLIDE);
     defaultSlides.push(MULTI_SRP_SLIDE);
     defaultSlides.push(BACKUPANDSYNC_SLIDE);
     if (!useExternalServices) {
@@ -102,7 +102,7 @@ export const useCarouselManagement = ({
     ///: BEGIN:ONLY_INCLUDE_IF(solana)
     defaultSlides.push(SOLANA_SLIDE);
     ///: END:ONLY_INCLUDE_IF
-    defaultSlides.splice(hasZeroBalance ? 0 : 2, 0, fundSlide);
+    // defaultSlides.splice(hasZeroBalance ? 0 : 2, 0, fundSlide);
 
     if (isRemoteModeEnabled) {
       defaultSlides.unshift(REMOTE_MODE_SLIDE);

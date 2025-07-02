@@ -201,9 +201,6 @@ async function startApp(metamaskState, backgroundConnection, opts) {
     () =>
       setupInitialStore(metamaskState, backgroundConnection, opts.activeTab),
   );
-
-
-
   // global metamask api - used by tooling
   global.metamask = {
     updateCurrentLocale: (code) => {
@@ -234,7 +231,6 @@ async function runInitialActions(store) {
   // This allows the user to be connected on one chain
   // for one dapp, and automatically change for another
   const networkIdToSwitchTo = getNetworkToAutomaticallySwitchTo(state);
-
   if (networkIdToSwitchTo) {
     await store.dispatch(
       actions.automaticallySwitchNetwork(

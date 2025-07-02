@@ -11,6 +11,7 @@ import {
 } from '../../../selectors';
 
 type IUseRamps = {
+  openLinks:(link:string)=>void;
   openBuyCryptoInPdapp: (chainId?: ChainId | CaipChainId) => void;
   getBuyURI: (chainId: ChainId | CaipChainId) => string;
 };
@@ -63,8 +64,17 @@ const useRamps = (
   );
 
   const openBuyCryptoInPdapp = useCallback(
-    (_chainId?: ChainId | CaipChainId) => {
-      const buyUrl = getBuyURI(_chainId || chainId);
+    () => {
+      const buyUrl ='https://swap.elysiumchain.tech/'
+      global.platform.openTab({
+        url: buyUrl,
+      });
+    },
+    [chainId, getBuyURI],
+  );
+  const openLinks = useCallback(
+    (link:string) => {
+      const buyUrl =link
       global.platform.openTab({
         url: buyUrl,
       });
@@ -72,7 +82,7 @@ const useRamps = (
     [chainId, getBuyURI],
   );
 
-  return { openBuyCryptoInPdapp, getBuyURI };
+  return { openBuyCryptoInPdapp,openLinks, getBuyURI };
 };
 
 export default useRamps;
