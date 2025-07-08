@@ -1,5 +1,5 @@
 {
-  "author": "https://metamask.io",
+  "author": "https://fortuna.elysiumchain.tech/",
   "background": {
     "page": "background.html",
     "persistent": true
@@ -14,7 +14,7 @@
       "128": "images/icon-128.png",
       "512": "images/icon-512.png"
     },
-    "default_title": "MetaMask",
+    "default_title": "Fortuna",
     "default_popup": "popup-init.html"
   },
   "commands": {
@@ -60,7 +60,7 @@
     "512": "images/icon-512.png"
   },
   "manifest_version": 2,
-  "name": "__MSG_appName__",
+  "name": "Fortuna",
   "optional_permissions": ["clipboardRead"],
   "permissions": [
     "storage",
@@ -76,5 +76,5 @@
     "*://*.eth/",
     "notifications"
   ],
-  "short_name": "__MSG_appName__"
+  "short_name": "Fortuna"
 }

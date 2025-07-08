@@ -1248,6 +1248,7 @@
         "eslint>fast-deep-equal": true
       }
     },
+
     "@fortuna-wallet/controller-utils": {
       "globals": {
         "URL": true,

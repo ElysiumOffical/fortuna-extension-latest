@@ -1,13 +1,13 @@
 // contexts
-export const CONTENT_SCRIPT = 'metamask-contentscript';
-export const METAMASK_INPAGE = 'metamask-inpage';
-export const PHISHING_WARNING_PAGE = 'metamask-phishing-warning-page';
+export const CONTENT_SCRIPT = 'fortuna-contentscript';
+export const METAMASK_INPAGE = 'fortuna-inpage';
+export const PHISHING_WARNING_PAGE = 'fortuna-phishing-warning-page';
 
 // stream channels
-export const METAMASK_COOKIE_HANDLER = 'metamask-cookie-handler';
-export const METAMASK_EIP_1193_PROVIDER = 'metamask-provider';
-export const METAMASK_CAIP_MULTICHAIN_PROVIDER = 'metamask-multichain-provider';
-export const PHISHING_SAFELIST = 'metamask-phishing-safelist';
+export const METAMASK_COOKIE_HANDLER = 'fortuna-cookie-handler';
+export const METAMASK_EIP_1193_PROVIDER = 'fortuna-provider';
+export const METAMASK_CAIP_MULTICHAIN_PROVIDER = 'fortuna-multichain-provider';
+export const PHISHING_SAFELIST = 'fortuna-phishing-safelist';
 export const PHISHING_STREAM = 'phishing';
 
 // For more information about these legacy streams, see here:

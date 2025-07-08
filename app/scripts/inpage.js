@@ -48,8 +48,8 @@ import shouldInjectProvider from '../../shared/modules/provider-injection';
 import { METAMASK_EIP_1193_PROVIDER } from './constants/stream';
 
 // contexts
-const CONTENT_SCRIPT = 'metamask-contentscript';
-const INPAGE = 'metamask-inpage';
+const CONTENT_SCRIPT = 'fortuna-contentscript';
+const INPAGE = 'fortuna-inpage';
 
 restoreContextAfterImports();
 

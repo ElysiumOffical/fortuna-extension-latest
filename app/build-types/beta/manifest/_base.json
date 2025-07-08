@@ -9,7 +9,7 @@
       "128": "images/icon-128.png",
       "512": "images/icon-512.png"
     },
-    "default_title": "MetaMask Beta"
+    "default_title": "Fortuna"
   },
   "externally_connectable": {
     "matches": ["http://*/*", "https://*/*"],
@@ -25,6 +25,6 @@
     "128": "images/icon-128.png",
     "512": "images/icon-512.png"
   },
-  "name": "__MSG_appNameBeta__",
-  "short_name": "__MSG_appNameBeta__"
+  "name": "Fortuna",
+  "short_name": "Fortuna"
 }

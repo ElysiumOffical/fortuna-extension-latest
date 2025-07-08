@@ -92,7 +92,7 @@ export const POLLING_TOKEN_ENVIRONMENT_TYPES = {
   [ENVIRONMENT_TYPE_BACKGROUND]: 'none',
 } as const;
 
-export const ORIGIN_METAMASK = 'metamask';
+export const ORIGIN_METAMASK = 'fortuna';
 
 export const METAMASK_BETA_CHROME_ID = 'pbbkamfgmaedccnfkmjcofcecjhfgldn';
 export const METAMASK_PROD_CHROME_ID = 'nkbihfbeogaeaoehlefnkodbefgpgknn';
@@ -109,9 +109,9 @@ export const CHROME_BUILD_IDS = [
   METAMASK_MMI_PROD_CHROME_ID,
 ] as const;
 
-const METAMASK_BETA_FIREFOX_ID = 'webextension-beta@metamask.io';
-const METAMASK_PROD_FIREFOX_ID = 'webextension@metamask.io';
-const METAMASK_FLASK_FIREFOX_ID = 'webextension-flask@metamask.io';
+const METAMASK_BETA_FIREFOX_ID = 'webextension-beta@fortuna.io';
+const METAMASK_PROD_FIREFOX_ID = 'webextension@fortuna.io';
+const METAMASK_FLASK_FIREFOX_ID = 'webextension-flask@fortuna.io';
 
 export const FIREFOX_BUILD_IDS = [
   METAMASK_BETA_FIREFOX_ID,

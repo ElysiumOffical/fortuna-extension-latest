@@ -36,8 +36,19 @@ export default function WelcomeBanner({ onAccept }: { onAccept: () => void }) {
           as="h2"
           textTransform={TextTransform.Uppercase}
           marginBottom={8}
+          style={{ color: 'white' }}
         >
-          {t('welcomeTitle')}
+          {'Welcome to'}
+        </Text>
+        <Text
+          data-testid="onboarding-welcome-banner-title"
+          className="welcome-banner__title"
+          as="h2"
+          textTransform={TextTransform.Uppercase}
+          marginBottom={8}
+          style={{ color: '#9FC131' }}
+        >
+          {'FORTUNA'}
         </Text>
         <Text
           variant={TextVariant.bodyLgMedium}

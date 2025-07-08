@@ -67,7 +67,7 @@ export function getBuildName(
   const buildName =
     // TODO: Fix in https://github.com/MetaMask/metamask-extension/issues/31880
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    build.buildNameOverride ||
+    // build.buildNameOverride ||
     `Fortuna ${type.slice(0, 1).toUpperCase()}${type.slice(1)}`;
   if (isDev) {
     const mv3Str = args.manifest_version === 3 ? ' MV3' : '';

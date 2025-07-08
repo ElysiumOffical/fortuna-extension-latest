@@ -268,7 +268,7 @@ function getBuildName({
   const config = loadBuildTypesConfig();
 
   let name =
-    config.buildTypes[buildType].buildNameOverride ||
+    // config.buildTypes[buildType].buildNameOverride ||
     `Fortuna ${capitalize(buildType)}`;
 
   if (environment !== ENVIRONMENT.PRODUCTION) {
